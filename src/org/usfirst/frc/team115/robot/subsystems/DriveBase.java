@@ -30,9 +30,9 @@ public class DriveBase extends Subsystem {
 	}
 
 	public void setLeftRightPower(double leftPower, double rightPower) {
-	    leftDriveBaseFront.set(leftPower);
-	    rightDriveBaseFront.set(-rightPower);
-	  }
+		leftDriveBaseFront.set(leftPower);
+		rightDriveBaseFront.set(-rightPower);
+	}
 
 	@Override
 	public void run() {

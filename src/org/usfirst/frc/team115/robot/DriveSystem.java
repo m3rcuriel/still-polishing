@@ -15,7 +15,7 @@ public class DriveSystem {
 	}
 
 	public void drive(double throttle, double wheel, boolean quickTurn) {
-		if(DriverStation.getInstance().isAutonomous())
+		if (DriverStation.getInstance().isAutonomous())
 			return;
 
 		double logScale = 0.6;
@@ -27,10 +27,8 @@ public class DriveSystem {
 
 		oldWheel = wheel;
 
-		wheel = Math.sin(Math.PI / 2.0 * logScale * wheel)
-				/ Math.sin(Math.PI / 2.0 * logScale);
-		wheel = Math.sin(Math.PI / 2.0 * logScale * wheel)
-				/ Math.sin(Math.PI / 2.0 * logScale);
+		wheel = Math.sin(Math.PI / 2.0 * logScale * wheel) / Math.sin(Math.PI / 2.0 * logScale);
+		wheel = Math.sin(Math.PI / 2.0 * logScale * wheel) / Math.sin(Math.PI / 2.0 * logScale);
 
 		double leftPwm, rightPwm, overPower;
 		double sensitivity;
@@ -52,18 +50,18 @@ public class DriveSystem {
 		sensitivity = Constants.sensitivity.getDouble();
 
 		double negInertiaPower = negativeInertia * negInertiaScalar;
-	    negInertiaAccumulator += negInertiaPower;
+		negInertiaAccumulator += negInertiaPower;
 
-	    wheel = wheel + negInertiaAccumulator;
-	    if (negInertiaAccumulator > 1) {
-	      negInertiaAccumulator -= 1;
-	    } else if (negInertiaAccumulator < -1) {
-	      negInertiaAccumulator += 1;
-	    } else {
-	      negInertiaAccumulator = 0;
-	    }
+		wheel = wheel + negInertiaAccumulator;
+		if (negInertiaAccumulator > 1) {
+			negInertiaAccumulator -= 1;
+		} else if (negInertiaAccumulator < -1) {
+			negInertiaAccumulator += 1;
+		} else {
+			negInertiaAccumulator = 0;
+		}
 
-	    linearPower = throttle;
+		linearPower = throttle;
 
 		if (quickTurn) {
 			if (Math.abs(linearPower) < 0.2) {

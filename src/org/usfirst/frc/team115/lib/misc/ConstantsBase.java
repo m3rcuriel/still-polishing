@@ -1,9 +1,56 @@
 package org.usfirst.frc.team115.lib.misc;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class ConstantsBase {
+	private static final String CONSTANTS_FILE = "constants.txt";
 	private static final Vector<Constant> constants = new Vector<Constant>();
+
+	public static void readConstantsFromFile() {
+		String file = getFile(CONSTANTS_FILE);
+		if (file.length() < 1) {
+			System.err.println("Not overriding constants");
+		}
+
+		String[] lines = file.split("\n");
+
+		for (String line : lines) {
+			String[] keyvalue = line.split("=");
+			if (keyvalue.length != 2) {
+				System.out.println(
+						"Error: Invalid constants file line: " + (keyvalue.length == 0 ? "(empty line)" : line));
+				continue;
+			}
+			boolean found = false;
+			for (int j = 0; j < constants.size(); j++) {
+				Constant constant = constants.get(j);
+				if (constant.getName().equals(keyvalue[0])) {
+					System.out.println("Setting " + constant.getName() + " to " + Double.parseDouble(keyvalue[1]));
+					constant.setVal(Double.parseDouble(keyvalue[1]));
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				System.err.println("Error: the constant doesn't exist: " + line);
+			}
+		}
+	}
+
+	public static String getFile(String filename) {
+		String content = "";
+		try (Scanner fileSc = new Scanner(new File(filename)).useDelimiter("\\Z")) {
+			content = fileSc.next();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return content;
+	}
 
 	public static class Constant {
 		private String name;

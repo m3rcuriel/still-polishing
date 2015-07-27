@@ -12,50 +12,55 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  */
 public class MVRT extends IterativeRobot {
 
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    @Override
+	/**
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization code.
+	 */
+	@Override
 	public void robotInit() {
-    	MVRTRobot.init();
-    }
+		MVRTRobot.init();
+	}
 
-    /**
-     * This function is called periodically during autonomous
-     */
-    @Override
+	/**
+	 * This function is called periodically during autonomous
+	 */
+	@Override
 	public void autonomousPeriodic() {
 
-    }
+	}
 
-    @Override
-    public void teleopInit() {
-    	MVRTRobot.drivebase.turnOffControllers();
-    }
+	@Override
+	public void teleopInit() {
+		MVRTRobot.drivebase.turnOffControllers();
+	}
 
-    /**
-     * This function is called periodically during operator control
-     */
-    @Override
+	/**
+	 * This function is called periodically during operator control
+	 */
+	@Override
 	public void teleopPeriodic() {
-    	boolean quickTurn = MVRTRobot.driverJoystick.getTrigger();
-    	double turn = MVRTRobot.driverJoystick.getX();
+		boolean quickTurn = MVRTRobot.driverJoystick.getTrigger();
+		double turn = MVRTRobot.driverJoystick.getX();
 
-    	if(quickTurn) {
-    		double sign = Math.signum(turn);
-    		turn = turn * turn * sign;
-    	}
+		if (quickTurn) {
+			double sign = Math.signum(turn);
+			turn = turn * turn * sign;
+		}
 
-    	MVRTRobot.driveSystem.drive(MVRTRobot.driverJoystick.getY(), turn, quickTurn);
-    }
+		MVRTRobot.driveSystem.drive(MVRTRobot.driverJoystick.getY(), turn, quickTurn);
+	}
 
-    /**
-     * This function is called periodically during test mode
-     */
-    @Override
+	@Override
+	public void disabledInit() {
+		Constants.readConstantsFromFile();
+	}
+
+	/**
+	 * This function is called periodically during test mode
+	 */
+	@Override
 	public void testPeriodic() {
 
-    }
+	}
 
 }
