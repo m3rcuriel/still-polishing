@@ -1,16 +1,22 @@
 package org.usfirst.frc.team115.lib.misc;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.Scanner;
 import java.util.Vector;
 
 public class ConstantsBase {
-	private static final String CONSTANTS_FILE = "constants.txt";
+	private static final String DEFAULT_CONSTANTS_FILE = "constants.txt";
 	private static final Vector<Constant> constants = new Vector<Constant>();
 
 	public static void readConstantsFromFile() {
-		String file = getFile(CONSTANTS_FILE);
+		String file = getFile(DEFAULT_CONSTANTS_FILE);
 		if (file.length() < 1) {
 			System.err.println("Not overriding constants");
 		}
@@ -39,6 +45,32 @@ public class ConstantsBase {
 				System.err.println("Error: the constant doesn't exist: " + line);
 			}
 		}
+	}
+
+	public static void dumpConstantsToFile() {
+		try {
+			dumpConstantsToFile(DEFAULT_CONSTANTS_FILE);
+		} catch (FileNotFoundException e) {
+			System.err.println("The default constants file has been locked, or is a directory");
+			e.printStackTrace();
+		}
+	}
+
+	public static void dumpConstantsToFile(String filename) throws FileNotFoundException {
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"))) {
+			for(Constant constant : constants) {
+				String dumpText = constant.toString();
+				dumpText.replaceAll(": ", "=");
+
+			}
+		} catch (UnsupportedEncodingException e) {
+			System.err.println("This should never happen!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("File dump failed with IOException!");
+			e.printStackTrace();
+		}
+
 	}
 
 	public static String getFile(String filename) {
