@@ -47,7 +47,7 @@ public class DriveSystem {
 				negInertiaScalar = 3.0;
 			}
 		}
-		sensitivity = Constants.sensitivity.getDouble();
+		sensitivity = Constants.kDriveSensitivity;
 
 		double negInertiaPower = negativeInertia * negInertiaScalar;
 		negInertiaAccumulator += negInertiaPower;

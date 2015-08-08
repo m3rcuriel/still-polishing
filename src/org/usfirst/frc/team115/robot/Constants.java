@@ -3,20 +3,26 @@ package org.usfirst.frc.team115.robot;
 import org.usfirst.frc.team115.lib.misc.ConstantsBase;
 
 public class Constants extends ConstantsBase {
-	public static final Constant sensitivity = new Constant("sensitivity", .75);
+	public static double kDriveSensitivity = .75;
 
-	public static final Constant LEFT_DRIVE_FRONT = new Constant("Left Drive Front", 0);
-	public static final Constant LEFT_DRIVE_CENTER = new Constant("Left Drive Center", 0);
-	public static final Constant LEFT_DRIVE_REAR = new Constant("Left Drive Rear", 0);
+	public static long kSlowLooperPeriod = 10;
+	
+	// End of editable constants
+	public static int kEndEditableArea = 0;
 
-	public static final Constant RIGHT_DRIVE_FRONT = new Constant("Left Drive Front", 0);
-	public static final Constant RIGHT_DRIVE_CENTER = new Constant("Left Drive Front", 0);
-	public static final Constant RIGHT_DRIVE_REAR = new Constant("Left Drive Front", 0);
+	// Don't change electrical constants at runtime...!!!
+	public static int kLeftDriveFront = 0;
+	public static int kLeftDriveCenter = 0;
+	public static int kLeftDriveRear = 0;
 
-	public static final Constant driverJoystick = new Constant("Driver Joystick", 0);
+	public static int kRightDriveFront = 0;
+	public static int kRightDriveCenter = 0;
+	public static int kRightDriveRear = 0;
 
-	// private default constructor to prevent initialization
-	private Constants() {
+	public static int kDriverJoystick = 0;
 
+	@Override
+	public String getFileLocation() {
+		return "~/constants.txt";
 	}
 }
