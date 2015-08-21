@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.usfirst.frc.team115.lib.DriveOutput;
 import org.usfirst.frc.team115.lib.SystemManager;
 import org.usfirst.frc.team115.robot.subsystems.DriveBase;
 
@@ -22,29 +23,24 @@ public class MVRT extends IterativeRobot {
 
 	ScheduledExecutorService slowLooper = Executors.newScheduledThreadPool(3);
 	ScheduledExecutorService looper = Executors.newScheduledThreadPool(3);
-	ScheduledExecutorService logger = Executors.newSingleThreadScheduledExecutor();
-	
+
 	StateController stateController = new StateController();
-	
+
 	DriveBase drive = HardwareInterface.kDrive;
-	
+
 	DriveSystem driveSystem = new DriveSystem(drive);
-	
+
 	Joystick driveJoystick = HardwareInterface.kDriverJoystick;
 
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
-	
-	
 	@Override
 	public void robotInit() {
 		slowLooper.scheduleAtFixedRate(new DriveBase(), 0, Constants.kSlowLooperPeriod, TimeUnit.MILLISECONDS);
-		
+
 		SystemManager.getInstance().add(stateController);
-		// TODO add logger
-		// logger.scheduleAtFixedRate(, initialDelay, period, unit)
 	}
 
 	/**
@@ -57,7 +53,7 @@ public class MVRT extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		
+
 	}
 
 	/**
@@ -80,11 +76,11 @@ public class MVRT extends IterativeRobot {
 	public void disabledInit() {
 		looper.shutdown();
 		slowLooper.shutdown();
-		
-		drive.setLeftRightPower(0, 0);
-		
+
+		drive.setDriveOutputs(DriveOutput.NEUTRAL);;
+
 		drive.reloadConstants();
-		
+
 		System.gc();
 	}
 

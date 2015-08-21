@@ -1,5 +1,6 @@
 package org.usfirst.frc.team115.robot;
 
+import org.usfirst.frc.team115.lib.DriveOutput;
 import org.usfirst.frc.team115.robot.subsystems.DriveBase;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -100,7 +101,9 @@ public class DriveSystem {
 			leftPwm += overPower * (-1.0 - rightPwm);
 			rightPwm = -1.0;
 		}
-		drive.setLeftRightPower(leftPwm, rightPwm);
+
+		DriveOutput output = new DriveOutput(leftPwm, rightPwm);
+		drive.setDriveOutputs(output);
 	}
 
 	public double handleDeadband(double val, double deadband) {

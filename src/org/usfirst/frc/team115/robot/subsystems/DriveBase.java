@@ -1,14 +1,29 @@
 package org.usfirst.frc.team115.robot.subsystems;
 
+import org.usfirst.frc.team115.lib.DriveOutput;
+import org.usfirst.frc.team115.lib.Motion;
 import org.usfirst.frc.team115.lib.StateHolder;
 import org.usfirst.frc.team115.lib.Subsystem;
 import org.usfirst.frc.team115.robot.Constants;
+import org.usfirst.frc.team115.robot.HardwareInterface;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 
 public class DriveBase extends Subsystem implements Runnable {
 
+	public abstract class DriveController {
+		abstract DriveOutput update(Motion motion);
+
+		abstract Motion getCurrentSetpoint();
+
+		abstract public boolean onTarget();
+	}
+
+	private Motion cachedMotion = new Motion(0, 0, 0, 0, 0, 0);
+	private DriveController controller = null;
+
+	//TODO move to HardwareInterface?
 	private CANTalon leftDriveBaseFront = new CANTalon(Constants.kLeftDriveFront);
 	private CANTalon leftDriveBaseRear = new CANTalon(Constants.kLeftDriveRear);
 
@@ -24,19 +39,46 @@ public class DriveBase extends Subsystem implements Runnable {
 		rightDriveBaseRear.set(rightDriveBaseFront.getDeviceID());
 	}
 
-	public void setLeftRightPower(double leftPower, double rightPower) {
-		leftDriveBaseFront.set(leftPower);
-		rightDriveBaseFront.set(-rightPower);
+	public void setDriveOutputs(DriveOutput output) {
+		leftDriveBaseFront.set(output.leftMotors);
+		rightDriveBaseFront.set(-output.rightMotors);
 	}
 
 	@Override
 	public void run() {
+		if (controller == null)
+			return;
+		setDriveOutputs(controller.update(getPhysicalMotion()));
+	}
+
+	public Motion getPhysicalMotion() {
+		cachedMotion.reset(
+				leftDriveBaseFront.getPosition(),
+				rightDriveBaseFront.getPosition(),
+				leftDriveBaseFront.getSpeed(),
+				rightDriveBaseFront.getSpeed(),
+				HardwareInterface.kGyro.getAngle(),
+				HardwareInterface.kGyro.getRate()
+		);
+		return cachedMotion;
 	}
 
 	@Override
 	public void getState(StateHolder states) {
-		// TODO add states
-		
+		states.put("gyro_angle", HardwareInterface.kGyro.getAngle());
+        states.put("left_encoder", leftDriveBaseFront.getPosition());
+        states.put("left_encoder_rate", leftDriveBaseFront.getSpeed());
+        states.put("right_encoder_rate", rightDriveBaseFront.getSpeed());
+        states.put("right_encoder", rightDriveBaseFront.getPosition());
+
+        Motion setPointPose = controller == null
+                ? getPhysicalMotion()
+                : controller.getCurrentSetpoint();
+        //TODO encoder distance to setpoint
+        states.put("turn_set_point_pos", setPointPose.getHeading());
+        states.put("left_signal", leftDriveBaseFront.get());
+        states.put("right_signal", rightDriveBaseFront.get());
+        states.put("on_target", (controller != null && controller.onTarget()) ? 1.0 : 0.0);
 	}
 
 	@Override
