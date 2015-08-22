@@ -3,8 +3,8 @@ package org.usfirst.frc.team115.robot.subsystems;
 import org.usfirst.frc.team115.lib.StateHolder;
 import org.usfirst.frc.team115.lib.Subsystem;
 import org.usfirst.frc.team115.robot.Constants;
-import org.usfirst.frc.team115.robot.ElevatorController;
 import org.usfirst.frc.team115.robot.HardwareInterface;
+import org.usfirst.frc.team115.robot.subsystems.controllers.ElevatorController;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
