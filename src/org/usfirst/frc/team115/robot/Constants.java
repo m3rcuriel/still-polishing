@@ -30,7 +30,17 @@ public class Constants extends ConstantsBase {
 	public static int kRightDriveCenter = 0;
 	public static int kRightDriveRear = 0;
 
+	public static int kElevatorMain= 0;
+	public static int kElevatorFollow = 0;
+	public static int kElevatorBrakeA = 0;
+	public static int kElevatorBrakeB = 0;
+	
+	public static int kElevatorUp = 0;
+	
+	public static int pcm = 0;
+	
 	public static int kDriverJoystick = 0;
+	public static int kOperatorJoystick = 1;
 
 	@Override
 	public String getFileLocation() {
