@@ -43,6 +43,10 @@ public class TrajectoryFollowingPositionController extends Controller {
 		result = follower.calculate(position, velocity);
 	}
 
+	public TrajectoryFollower.TrajectorySetpoint getSetpoint() {
+        return follower.getCurrentSetpoint();
+    }
+
 	@Override
 	public void reset() {
 		result = 0;

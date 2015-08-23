@@ -1,5 +1,6 @@
 package org.usfirst.frc.team115.robot.subsystems;
 
+import org.usfirst.frc.team115.lib.DriveController;
 import org.usfirst.frc.team115.lib.DriveOutput;
 import org.usfirst.frc.team115.lib.Motion;
 import org.usfirst.frc.team115.lib.StateHolder;
@@ -11,14 +12,6 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 
 public class DriveBase extends Subsystem implements Runnable {
-
-	public abstract class DriveController {
-		abstract DriveOutput update(Motion motion);
-
-		abstract Motion getCurrentSetpoint();
-
-		abstract public boolean onTarget();
-	}
 
 	private Motion cachedMotion = new Motion(0, 0, 0, 0, 0, 0);
 	private DriveController controller = null;
