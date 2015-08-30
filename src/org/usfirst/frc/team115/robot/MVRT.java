@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.usfirst.frc.team115.lib.DriveOutput;
 import org.usfirst.frc.team115.lib.SystemManager;
+import org.usfirst.frc.team115.robot.statemachine.StateController;
 import org.usfirst.frc.team115.robot.subsystems.DriveBase;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -25,10 +26,9 @@ public class MVRT extends IterativeRobot {
 	ScheduledExecutorService looper = Executors.newScheduledThreadPool(3);
 
 	StateController stateController = new StateController();
+	OperatorInterface operatorInterface = new OperatorInterface();
 
-	DriveBase drive = HardwareInterface.kDrive;
-
-	DriveSystem driveSystem = new DriveSystem(drive);
+	DriveSystem driveSystem = new DriveSystem(HardwareInterface.kDrive);
 
 	Joystick driveJoystick = HardwareInterface.kDriverJoystick;
 
@@ -70,6 +70,7 @@ public class MVRT extends IterativeRobot {
 		}
 
 		driveSystem.drive(driveJoystick.getY(), turn, quickTurn);
+		stateController.update(operatorInterface.getCommands());
 	}
 
 	@Override
@@ -77,9 +78,10 @@ public class MVRT extends IterativeRobot {
 		looper.shutdown();
 		slowLooper.shutdown();
 
-		drive.setDriveOutputs(DriveOutput.NEUTRAL);;
+		HardwareInterface.kDrive.setDriveOutputs(DriveOutput.NEUTRAL);;
 
-		drive.reloadConstants();
+		HardwareInterface.kDrive.reloadConstants();
+		HardwareInterface.kElevator.reloadConstants();
 
 		System.gc();
 	}

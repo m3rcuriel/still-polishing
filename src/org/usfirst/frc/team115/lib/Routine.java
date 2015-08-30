@@ -1,5 +1,8 @@
 package org.usfirst.frc.team115.lib;
 
+import org.usfirst.frc.team115.robot.statemachine.Commands;
+import org.usfirst.frc.team115.robot.statemachine.RobotSetpoints;
+
 public abstract class Routine {
 	public abstract void reset();
 

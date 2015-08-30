@@ -11,20 +11,27 @@ import org.usfirst.frc.team115.robot.HardwareInterface;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 
-public class DriveBase extends Subsystem {
+public class DriveBase extends Subsystem implements Runnable {
 
 	private Motion cachedMotion = new Motion(0, 0, 0, 0, 0, 0);
 	private DriveController controller = null;
 
 	//TODO move to HardwareInterface?
-	private CANTalon leftDriveBaseFront = new CANTalon(Constants.kLeftDriveFront);
-	private CANTalon leftDriveBaseRear = new CANTalon(Constants.kLeftDriveRear);
+	private CANTalon leftDriveBaseFront;
+	private CANTalon leftDriveBaseRear;
 
-	private CANTalon rightDriveBaseFront = new CANTalon(Constants.kRightDriveFront);
-	private CANTalon rightDriveBaseRear = new CANTalon(Constants.kRightDriveRear);
+	private CANTalon rightDriveBaseFront;
+	private CANTalon rightDriveBaseRear;
 
 	public DriveBase() {
 		super("Drivebase");
+		
+		leftDriveBaseFront = new CANTalon(Constants.kLeftDriveFront);
+		leftDriveBaseRear = new CANTalon(Constants.kLeftDriveRear);
+
+		rightDriveBaseFront = new CANTalon(Constants.kRightDriveFront);
+		rightDriveBaseRear = new CANTalon(Constants.kRightDriveRear);
+		
 		leftDriveBaseRear.changeControlMode(ControlMode.Follower);
 		leftDriveBaseRear.set(leftDriveBaseFront.getDeviceID());
 

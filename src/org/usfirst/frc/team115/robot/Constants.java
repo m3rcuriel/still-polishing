@@ -26,14 +26,14 @@ public class Constants extends ConstantsBase {
 	public static double kDriveStraightKd = 0;
 
 	public static double kDriveSensitivity = .75;
-	
+
 	public static double kElevatorPositionKp = 0;
 	public static double kElevatorPositionKi = 0;
 	public static double kElevatorPositionKd = 0;
 	public static double kElevatorPositionKv = 0;
 	public static double kElevatorPositionKa = 0;
 	public static double kElevatorOnTargetError = 0;
-	
+
 	public static double kElevatorMaxAccelInchesPerSec2 = 0;
 	public static double kElevatorMaxSpeedInchesPerSec2 = 0;
 
@@ -46,20 +46,27 @@ public class Constants extends ConstantsBase {
 
 	// Don't change electrical constants at runtime...!!!
 	public static int kLeftDriveFront = 0;
-	public static int kLeftDriveCenter = 0;
 	public static int kLeftDriveRear = 0;
 
 	public static int kRightDriveFront = 0;
-	public static int kRightDriveCenter = 0;
 	public static int kRightDriveRear = 0;
 
 	public static int kElevatorDrive1 = 0;
 	public static int kElevatorDrive2 = 0;
-	
+
+	public static int kElevatorDrive1PDP = 0;
+	public static int kElevatorDrive2PDP = 0;
+
 	public static int kElevatorBrakeA = 0;
 	public static int kElevatorBrakeB = 0;
 
+	public static int kIntakeSolenoidA = 0;
+	public static int kIntakeSolenoidB = 0;
+
 	public static int kDriverJoystick = 0;
+	public static int kOperatorJoystick = 0;
+
+	public static int kIntakeToggleButton = 0;
 
 	@Override
 	public String getFileLocation() {

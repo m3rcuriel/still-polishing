@@ -1,5 +1,6 @@
 package org.usfirst.frc.team115.robot.subsystems;
 
+import org.usfirst.frc.team115.lib.AbstractSpeedController;
 import org.usfirst.frc.team115.lib.Controller;
 import org.usfirst.frc.team115.lib.StateHolder;
 import org.usfirst.frc.team115.lib.Subsystem;
@@ -8,10 +9,11 @@ import org.usfirst.frc.team115.robot.Constants;
 import org.usfirst.frc.team115.robot.subsystems.controllers.TrajectoryFollowingPositionController;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
-public class Elevator extends Subsystem {
+public class Elevator extends Subsystem implements Runnable {
 
 	//TODO move to Constants
 	public static final double BOTTOM_HEIGHT = 0;
@@ -23,18 +25,25 @@ public class Elevator extends Subsystem {
 
 	private Controller controller = null;
 
-	private CANTalon elevatorDrive1 = new CANTalon(Constants.kElevatorDrive1);
-	private CANTalon elevatorDrive2 = new CANTalon(Constants.kElevatorDrive2);
-	
-	private DoubleSolenoid brakeSolenoid = new DoubleSolenoid(Constants.kElevatorBrakeA, Constants.kElevatorBrakeB);
-	
+	private CANTalon elevatorDrive1;
+	private CANTalon elevatorDrive2;
+	private AbstractSpeedController speedController;
+
+	private DoubleSolenoid brakeSolenoid;
+
 	private boolean brakeOnTarget;
 
 	public Elevator() {
 		super("elevator");
-		
-		elevatorDrive2.changeControlMode(CANTalon.ControlMode.Follower);
+
+		elevatorDrive1 = new CANTalon(Constants.kElevatorDrive1);
+		elevatorDrive2 = new CANTalon(Constants.kElevatorDrive2);
+		elevatorDrive2.changeControlMode(ControlMode.Follower);
 		elevatorDrive2.set(elevatorDrive1.getDeviceID());
+
+		brakeSolenoid = new DoubleSolenoid(Constants.kElevatorBrakeA, Constants.kElevatorBrakeB);
+		//		speedController =  = new AbstractSpeedController(new CANTalon[]{elevatorDrive1, elevatorDrive2},
+		//				new int[]{Constants.kElevatorDrive1PDP, Constants.kElevatorDrive2PDP});
 	}
 
 	public TrajectoryFollower.TrajectorySetpoint getSetpoint() {
@@ -50,13 +59,13 @@ public class Elevator extends Subsystem {
 	}
 
 	public double getHeight() {
-		return BOTTOM_HEIGHT - elevatorDrive1.getPosition() / TICKS_PER_INCH;
+		return elevatorDrive1.getPosition() / TICKS_PER_INCH;
 	}
-	
+
 	public double getVelocity() {
 		return (((elevatorDrive1.getSpeed() + elevatorDrive2.getSpeed()) / 2) / TICKS_PER_INCH) / 10;
 	}
-	
+
 	public double getGoalHeight() {
 		if (controller instanceof TrajectoryFollowingPositionController) {
 			return ((TrajectoryFollowingPositionController) controller).getGoal();
@@ -64,18 +73,18 @@ public class Elevator extends Subsystem {
 			return -1;
 		}
 	}
-	
+
 	public void setSpeedUnsafe(double speed) {
 		elevatorDrive1.set(speed);
 	}
-	
+
 	public void setSpeedLimitlessSafe(double speed) {
 		if (speed > 1E-3 || speed < -1E-3) {
 			setBrake(false);
 		}
 		setSpeedUnsafe(speed);
 	}
-	
+
 	public void setSpeedSafe(double speed) {
 		double height = getHeight();
 		if (speed > 1E-3 || speed < -1E-3) {
@@ -88,24 +97,24 @@ public class Elevator extends Subsystem {
 		}
 		setSpeedUnsafe(speed);
 	}
-	
+
 	public void setBrake(boolean on) {
 		brakeSolenoid.set(on ? Value.kForward : Value.kReverse);
 		if (on) {
 			setSpeedUnsafe(0);
 		}
 	}
-	
+
 	public boolean getBrake() {
 		return brakeSolenoid.get() == DoubleSolenoid.Value.kForward;
 	}
-	
+
 	public synchronized void setOpenLoop(double speed, boolean brake) {
 		controller = null;
 		setBrake(brake);
 		setSpeedLimitlessSafe(speed);
 	}
-	
+
 	public synchronized void setPositionSetpoint(double setpoint, boolean brakeOnTarget) {
 		this.brakeOnTarget = brakeOnTarget;
 		TrajectoryFollower.TrajectorySetpoint priorSetpoint = getSetpoint();
@@ -153,7 +162,7 @@ public class Elevator extends Subsystem {
 				setSpeedSafe(positionController.get());
 			}
 		}
-		
+
 		if (getBrake()) {
 			setSpeedUnsafe(0.0);
 		}

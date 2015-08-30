@@ -3,19 +3,19 @@ package org.usfirst.frc.team115.robot;
 import org.usfirst.frc.team115.lib.StateHolder;
 import org.usfirst.frc.team115.lib.StateMachine;
 
-// behaviour manager
-public class StateController implements StateMachine {
-	public StateController() {
-		// TODO add more subsystems
-	}
+import edu.wpi.first.wpilibj.Timer;
+
+public class RobotData implements StateMachine {
 
 	@Override
 	public void getState(StateHolder states) {
-		// TODO add modes to log
+		states.put("voltage", HardwareInterface.kPDP.getVoltage());
+		states.put("robotTime", Timer.getFPGATimestamp());
 	}
 
 	@Override
 	public String getName() {
-		return "state controller";
+		return "robot";
 	}
+
 }

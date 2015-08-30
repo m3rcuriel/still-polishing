@@ -1,6 +1,6 @@
 package org.usfirst.frc.team115.lib;
 
-public abstract class Subsystem implements StateMachine, Runnable {
+public abstract class Subsystem implements StateMachine {
 
 	protected String name;
 
