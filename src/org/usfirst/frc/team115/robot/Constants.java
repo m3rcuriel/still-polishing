@@ -26,6 +26,16 @@ public class Constants extends ConstantsBase {
 	public static double kDriveStraightKd = 0;
 
 	public static double kDriveSensitivity = .75;
+	
+	public static double kElevatorPositionKp = 0;
+	public static double kElevatorPositionKi = 0;
+	public static double kElevatorPositionKd = 0;
+	public static double kElevatorPositionKv = 0;
+	public static double kElevatorPositionKa = 0;
+	public static double kElevatorOnTargetError = 0;
+	
+	public static double kElevatorMaxAccelInchesPerSec2 = 0;
+	public static double kElevatorMaxSpeedInchesPerSec2 = 0;
 
 	public static long kSlowLooperPeriod = 10;
 
@@ -45,6 +55,9 @@ public class Constants extends ConstantsBase {
 
 	public static int kElevatorDrive1 = 0;
 	public static int kElevatorDrive2 = 0;
+	
+	public static int kElevatorBrakeA = 0;
+	public static int kElevatorBrakeB = 0;
 
 	public static int kDriverJoystick = 0;
 
