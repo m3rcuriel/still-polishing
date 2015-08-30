@@ -1,125 +1,180 @@
 package org.usfirst.frc.team115.lib.misc;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.Scanner;
-import java.util.Vector;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
-public class ConstantsBase {
-	private static final String DEFAULT_CONSTANTS_FILE = "constants.txt";
-	private static final Vector<Constant> constants = new Vector<Constant>();
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-	public static void readConstantsFromFile() {
-		String file = getFile(DEFAULT_CONSTANTS_FILE);
-		if (file.length() < 1) {
-			System.err.println("Not overriding constants");
-		}
-
-		String[] lines = file.split("\n");
-
-		for (String line : lines) {
-			String[] keyvalue = line.split("=");
-			if (keyvalue.length != 2) {
-				System.out.println(
-						"Error: Invalid constants file line: " + (keyvalue.length == 0 ? "(empty line)" : line));
-				continue;
-			}
-			boolean found = false;
-			for (int j = 0; j < constants.size(); j++) {
-				Constant constant = constants.get(j);
-				if (constant.getName().equals(keyvalue[0])) {
-					System.out.println("Setting " + constant.getName() + " to " + Double.parseDouble(keyvalue[1]));
-					constant.setVal(Double.parseDouble(keyvalue[1]));
-					found = true;
-					break;
-				}
-			}
-
-			if (!found) {
-				System.err.println("Error: the constant doesn't exist: " + line);
-			}
-		}
-	}
-
-	public static void dumpConstantsToFile() {
-		try {
-			dumpConstantsToFile(DEFAULT_CONSTANTS_FILE);
-		} catch (FileNotFoundException e) {
-			System.err.println("The default constants file has been locked, or is a directory");
-			e.printStackTrace();
-		}
-	}
-
-	public static void dumpConstantsToFile(String filename) throws FileNotFoundException {
-		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"))) {
-			for(Constant constant : constants) {
-				String dumpText = constant.toString();
-				dumpText.replaceAll(": ", "=");
-
-			}
-		} catch (UnsupportedEncodingException e) {
-			System.err.println("This should never happen!");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("File dump failed with IOException!");
-			e.printStackTrace();
-		}
-
-	}
-
-	public static String getFile(String filename) {
-		String content = "";
-		try (Scanner fileSc = new Scanner(new File(filename)).useDelimiter("\\Z")) {
-			content = fileSc.next();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		return content;
-	}
+public abstract class ConstantsBase {
+	private HashMap<String, Boolean> modifiedKeys = new HashMap<String, Boolean>();
+	
+	public abstract String getFileLocation();
 
 	public static class Constant {
-		private String name;
-		private double value;
-
-		public Constant(String name, double value) {
+		public String name;
+		public Class type;
+		public Object value;
+		
+		public Constant(String name, Class type, Object value) {
 			this.name = name;
-			this.value = value;
-			constants.addElement(this);
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public double getDouble() {
-			return value;
-		}
-
-		public int getInt() {
-			return (int) value;
-		}
-
-		public void setVal(double value) {
+			this.type = type;
 			this.value = value;
 		}
-
-		public String toHtml() {
-			String str = "<html>" + this.name + ": " + "<input type='text' value=\"" + this.value + "\" name=\""
-					+ this.name + "\"> <br/>";
-
-			return str;
+		
+		public boolean equals(Object o) {
+			String oname = ((Constant) o).name;
+			Class otype = ((Constant) o).type;
+			Object ovalue = ((Constant) o).value;
+			return o instanceof Constant && this.name.equals(oname)
+					&& this.type.equals(otype) && this.value.equals(ovalue);
 		}
-
-		@Override
-		public String toString() {
-			return name + ": " + value;
+	}
+	
+	public JSONObject getJSONObjectFromFile() throws IOException, ParseException {
+		File file = getFile();
+		if (file == null || !file.exists()) {
+			return new JSONObject();
 		}
+		
+		FileReader reader = new FileReader(file);
+		JSONParser parser = new JSONParser();
+		return (JSONObject) parser.parse(reader);
+	}
+	
+	public boolean setConstant(String name, Double value) {
+        return setConstantRaw(name, value);
+    }
+
+    public boolean setConstant(String name, Integer value) {
+        return setConstantRaw(name, value);
+    }
+
+    public boolean setConstant(String name, String value) {
+        return setConstantRaw(name, value);
+    }
+	
+	public boolean setConstantRaw(String name, Object value) {
+		boolean success = false;
+		try {
+			Field constant = this.getClass().getDeclaredField(name);
+			if (java.lang.reflect.Modifier.isStatic(constant.getModifiers())) {
+				try {
+					Object current = constant.get(this);
+					constant.set(this, value);
+					success = true;
+					if (!value.equals(current)) {
+						modifiedKeys.put(name, true);
+					}
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (NoSuchFieldException e) {
+			System.err.println("Field " + name + "not found!");
+			success = false;
+		}
+		return success;
+	}
+	
+	public Object getValueForConstant(String name) {
+        Field[] declaredFields = this.getClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                    && field.getName().equals(name)) {
+                try {
+                    return field.get(this);
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    System.err.println("Field " + name + " not found!");
+                    return null;
+                }
+            }
+        }
+        System.err.println("Field " + name + " not found!");
+        return null;
+    }
+	
+	public Object getValueForConstant(String name, Object defaultValue) throws Exception {
+        return getValueForConstant(name) == null ? defaultValue : getValueForConstant(name);
+    }
+	
+	public void loadFromFile() {
+		try {
+			JSONObject jsonObject = getJSONObjectFromFile();
+			Set keys = jsonObject.keySet();
+			for (Object o : keys) {
+				String key = (String) o;
+				Object value = jsonObject.get(o);
+				if (value instanceof Long && getConstant(key).type.equals(int.class)) {
+					value = new BigDecimal((Long) value).intValueExact();
+				}
+				setConstantRaw(key, value);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Constant getConstant(String name) {
+		try {
+			Field constant = getClass().getDeclaredField(name);
+			if (!java.lang.reflect.Modifier.isStatic(constant.getModifiers())) {
+				throw new NoSuchFieldException();
+			}
+			
+			return new Constant(constant.getName(), constant.getType(), constant.get(this));
+		} catch (NoSuchFieldException e) {
+			System.err.println("Field " + name + " not found, returning blank constant!");
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return new Constant("", Object.class, 0);
+	}
+	
+	public Collection<Constant> getConstants() {
+        List<Constant> constants = (List<Constant>) getAllConstants();
+        int stop = constants.size() - 1;
+        for (int i = 0; i < constants.size(); ++i) {
+            Constant c = constants.get(i);
+            if ("kEndEditableArea".equals(c.name)) {
+                stop = i;
+            }
+        }
+        return constants.subList(0, stop);
+    }
+
+    private Collection<Constant> getAllConstants() {
+        Field[] declaredFields = this.getClass().getDeclaredFields();
+        List<Constant> constants = new ArrayList<Constant>(
+                declaredFields.length);
+        for (Field field : declaredFields) {
+            if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                Constant c;
+                try {
+                    c = new Constant(field.getName(), field.getType(),
+                            field.get(this));
+                    constants.add(c);
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return constants;
+    }
+
+	public File getFile() {
+		return new File(getFileLocation().replaceFirst("^~", System.getProperty("user.home")));
 	}
 }
