@@ -12,6 +12,19 @@ public class Constants extends ConstantsBase {
 
 	public static double kTurnMaxAccelRadsPerSec2 = 0;
 
+	public static double kDrivePositionKp = 0;
+	public static double kDrivePositionKi = 0;
+	public static double kDrivePositionKd = 0;
+	public static double kDrivePositionKv = 0;
+	public static double kDrivePositionKa = 0;
+	public static double kDriveOnTargetError = 0;
+
+	public static double kDriveMaxAccelInchesPerSec2 = 0;
+
+	public static double kDriveStraightKp = 0;
+	public static double kDriveStraightKi = 0;
+	public static double kDriveStraightKd = 0;
+
 	public static double kDriveSensitivity = .75;
 
 	public static long kSlowLooperPeriod = 10;
@@ -29,6 +42,9 @@ public class Constants extends ConstantsBase {
 	public static int kRightDriveFront = 0;
 	public static int kRightDriveCenter = 0;
 	public static int kRightDriveRear = 0;
+
+	public static int kElevatorDrive1 = 0;
+	public static int kElevatorDrive2 = 0;
 
 	public static int kDriverJoystick = 0;
 

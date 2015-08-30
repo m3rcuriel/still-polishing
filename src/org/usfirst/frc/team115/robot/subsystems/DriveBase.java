@@ -11,7 +11,7 @@ import org.usfirst.frc.team115.robot.HardwareInterface;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 
-public class DriveBase extends Subsystem implements Runnable {
+public class DriveBase extends Subsystem {
 
 	private Motion cachedMotion = new Motion(0, 0, 0, 0, 0, 0);
 	private DriveController controller = null;

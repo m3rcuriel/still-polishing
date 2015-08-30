@@ -1,4 +1,4 @@
-package org.usfirst.frc.team115.lib.misc;
+package org.usfirst.frc.team115.lib;
 
 import edu.wpi.first.wpilibj.util.BoundaryException;
 
@@ -17,7 +17,7 @@ public class SynchronousPID {
     private double maximumInput = 0.0;        // maximum input - limit setpoint to this
     private double minimumInput = 0.0;        // minimum input - limit setpoint to this
     private boolean continuous = false;    // do the endpoints wrap around? eg. Absolute encoder
-    private double prev_error = 0.0;    // the prior sensor input (used to compute velocity)
+    private double prevError = 0.0;    // the prior sensor input (used to compute velocity)
     private double totalError = 0.0; //the sum of the errors for use in the integral calc
     private double setpoint = 0.0;
     private double error = 0.0;
@@ -231,7 +231,7 @@ public class SynchronousPID {
      */
     public void reset() {
         prev_input = Double.NaN;
-        prev_error = 0;
+        prevError = 0;
         totalError = 0;
         result = 0;
         setpoint = 0;
