@@ -1,6 +1,5 @@
 package org.usfirst.frc.team115.robot.subsystems;
 
-import org.usfirst.frc.team115.lib.AbstractSpeedController;
 import org.usfirst.frc.team115.lib.Controller;
 import org.usfirst.frc.team115.lib.StateHolder;
 import org.usfirst.frc.team115.lib.Subsystem;
@@ -28,7 +27,7 @@ public class Elevator extends Subsystem implements Runnable {
 
 	private CANTalon elevatorDrive1;
 	private CANTalon elevatorDrive2;
-	private AbstractSpeedController speedController;
+	//	private AbstractSpeedController speedController;
 
 	private DoubleSolenoid brakeSolenoid;
 
@@ -45,6 +44,9 @@ public class Elevator extends Subsystem implements Runnable {
 		brakeSolenoid = new DoubleSolenoid(Constants.kElevatorBrakeA, Constants.kElevatorBrakeB);
 		//		speedController =  = new AbstractSpeedController(new CANTalon[]{elevatorDrive1, elevatorDrive2},
 		//				new int[]{Constants.kElevatorDrive1PDP, Constants.kElevatorDrive2PDP});
+
+		elevatorDrive1.setPosition(0);
+		elevatorDrive2.setPosition(0);
 	}
 
 	public TrajectoryFollower.TrajectorySetpoint getSetpoint() {
