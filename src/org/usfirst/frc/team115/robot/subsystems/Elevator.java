@@ -6,6 +6,7 @@ import org.usfirst.frc.team115.lib.StateHolder;
 import org.usfirst.frc.team115.lib.Subsystem;
 import org.usfirst.frc.team115.lib.trajectory.TrajectoryFollower;
 import org.usfirst.frc.team115.robot.Constants;
+import org.usfirst.frc.team115.robot.subsystems.controllers.BangBangController;
 import org.usfirst.frc.team115.robot.subsystems.controllers.TrajectoryFollowingPositionController;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -69,6 +70,8 @@ public class Elevator extends Subsystem implements Runnable {
 	public double getGoalHeight() {
 		if (controller instanceof TrajectoryFollowingPositionController) {
 			return ((TrajectoryFollowingPositionController) controller).getGoal();
+		} else if (controller instanceof BangBangController) {
+			return ((BangBangController) controller).getGoal();
 		} else {
 			return -1;
 		}
@@ -135,6 +138,14 @@ public class Elevator extends Subsystem implements Runnable {
 		}
 	}
 
+	public synchronized void setFastPositionSetpoint(double setpoint) {
+		if (!(controller instanceof BangBangController)) {
+			controller = new BangBangController(0.5);
+		}
+		controller.reset();
+		((BangBangController) controller).setGoal(setpoint);
+	}
+
 	@Override
 	public void getState(StateHolder states) {
 		states.put("height", getHeight());
@@ -157,7 +168,16 @@ public class Elevator extends Subsystem implements Runnable {
 					setOpenLoop(0, true);
 					controller = null;
 				}
-			} else {
+			} else if (controller instanceof BangBangController) {
+				double power = ((BangBangController) controller).update(getHeight());
+				if (power != 0.0) {
+					setBrake(false);
+					setSpeedSafe(power);
+				} else {
+					setBrake(true);
+				}
+			}
+			else {
 				positionController.update(getHeight(), getVelocity());
 				setSpeedSafe(positionController.get());
 			}
