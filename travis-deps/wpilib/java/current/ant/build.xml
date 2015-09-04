@@ -124,10 +124,6 @@
 
   </target>
 
-  <target name="test" depends="jar" description="Test compilation against WPILib">
-    <echo>Entered test environment</echo>
-  </target>
-
   <target name="debug-deploy" depends="jar,get-target-ip,dependencies" description="Deploy the jar and start the program running.">
     <echo>[athena-deploy] Copying code over.</echo>
     <scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
