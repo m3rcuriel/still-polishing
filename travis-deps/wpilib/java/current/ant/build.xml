@@ -124,7 +124,7 @@
 
   </target>
 
-  <target name="test" depends="jar,dependencies" description="Test compilation against WPILib">
+  <target name="test" depends="jar" description="Test compilation against WPILib">
     <echo>Entered test environment</echo>
   </target>
 
