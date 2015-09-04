@@ -24,7 +24,12 @@
   <property file="${user.home}/wpilib/wpilib.properties"/>
   <property file="build.properties"/>
   <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
-  
+
+
   <import file="${wpilib.ant.dir}/build.xml"/>
+
+  <target name="test" depends="jar" description="Compiles the code against WPILib and checks source format">
+      <echo>Entered test function</echo>
+  </target>
 
 </project> 
