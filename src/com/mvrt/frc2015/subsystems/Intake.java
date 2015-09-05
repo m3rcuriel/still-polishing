@@ -3,32 +3,33 @@ package com.mvrt.frc2015.subsystems;
 import com.mvrt.frc2015.Constants;
 import com.mvrt.lib.StateHolder;
 import com.mvrt.lib.Subsystem;
-import com.mvrt.lib.AbstractSpeedController;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 
 public class Intake extends Subsystem {
 	
 	private State state;
 	
 	private DoubleSolenoid intake;
-	private AbstractSpeedController leftMotor;
-	private AbstractSpeedController rightMotor;
+	private CANTalon leftMotor;
+	private CANTalon rightMotor;
 	
 	public enum State {
 		OPEN, CLOSED;
 	}
 
-	public Intake(AbstractSpeedController leftMotor, AbstractSpeedController rightMotor ) {
+	public Intake() {
 		super("Intake");
 		
 		intake = new DoubleSolenoid(Constants.kIntakeSolenoidA, Constants.kIntakeSolenoidB);
-		this.leftMotor = leftMotor;
-		this.rightMotor = rightMotor;
-		leftMotor.setInverted(true);
-		rightMotor.setInverted(true);
 		state = intake.get() == Value.kForward ? State.OPEN : State.CLOSED;
+
+		leftMotor = new CANTalon(Constants.kLeftRollerMotor);
+		rightMotor = new CANTalon(Constants.kRightRollerMotor);
 	}
 	
 	public void open() {
@@ -46,8 +47,8 @@ public class Intake extends Subsystem {
 	}
 	
 	public void setLeftRightRollerMotors(double leftSpeed, double rightSpeed) {
-		leftMotor.set(leftSpeed);
-		rightMotor.set(rightSpeed);
+		leftMotor.set(-leftSpeed); 
+		rightMotor.set(-rightSpeed);
 	}
 	
 	public State getState() {
