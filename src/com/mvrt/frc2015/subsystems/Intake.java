@@ -42,10 +42,10 @@ public class Intake extends Subsystem {
 	}
 	
 	public void setRollerSpeed(double speed) {
-		setLeftRightRollers(speed, speed);
+		setLeftRightRollerMotors(speed, speed);
 	}
 	
-	public void setLeftRightRollers(double leftSpeed, double rightSpeed) {
+	public void setLeftRightRollerMotors(double leftSpeed, double rightSpeed) {
 		leftMotor.set(leftSpeed);
 		rightMotor.set(rightSpeed);
 	}
