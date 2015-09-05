@@ -7,11 +7,15 @@ import com.mvrt.lib.Subsystem;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
+import edu.wpi.first.wpilibj.CANTalon;
+
 public class Intake extends Subsystem {
 	
 	private State state;
 	
 	private DoubleSolenoid intake;
+	private CANTalon leftMotor;
+	private CANTalon rightMotor;
 	
 	public enum State {
 		OPEN, CLOSED;
@@ -22,6 +26,9 @@ public class Intake extends Subsystem {
 		
 		intake = new DoubleSolenoid(Constants.kIntakeSolenoidA, Constants.kIntakeSolenoidB);
 		state = intake.get() == Value.kForward ? State.OPEN : State.CLOSED;
+
+		leftMotor = new CANTalon(Constants.kLeftRollerMotor);
+		rightMotor = new CANTalon(Constants.kRightRollerMotor);
 	}
 	
 	public void open() {
@@ -32,6 +39,15 @@ public class Intake extends Subsystem {
 	public void close() {
 		state = State.CLOSED;
 		intake.set(Value.kReverse);
+	}
+	
+	public void setRollerSpeed(double speed) {
+		setLeftRightRollerMotors(speed, speed);
+	}
+	
+	public void setLeftRightRollerMotors(double leftSpeed, double rightSpeed) {
+		leftMotor.set(-leftSpeed); 
+		rightMotor.set(-rightSpeed);
 	}
 	
 	public State getState() {
