@@ -20,6 +20,7 @@ public class Stabilizer extends Subsystem {
 	public Stabilizer() {
 		super("stabilizer");
 		stabilizerSolenoid = new DoubleSolenoid(Constants.kStabilizerSolenoidA, Constants.kStabilizerSolenoidB);
+		state = stabilizerSolenoid.get() == DoubleSolenoid.Value.kForward ? State.OPEN : State.CLOSED;
 	}
 	
 	public void open() {
@@ -32,10 +33,13 @@ public class Stabilizer extends Subsystem {
 		state = State.CLOSED;
 	}
 
-
+	public State getState() {
+		return state;
+	}
+	
 	@Override
 	public void getState(StateHolder states) {
-	      states.put("stabilizer state", state == State.OPEN ? "open" : "closed");
+		states.put("stabilizer state", state == State.OPEN ? "open" : "closed");
 	}
 
 	@Override
