@@ -63,6 +63,9 @@ public class Constants extends ConstantsBase {
 	public static int kIntakeSolenoidA = 0;
 	public static int kIntakeSolenoidB = 0;
 	
+	public static int kStabilizerSolenoidA = 0;
+	public static int kStabilizerSolenoidB = 0;
+	
 	public static int kLeftRollerMotor = 0;
 	public static int kRightRollerMotor = 0;
 
