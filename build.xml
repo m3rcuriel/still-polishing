@@ -28,7 +28,16 @@
 
   <import file="${wpilib.ant.dir}/build.xml"/>
 
-  <target name="test" depends="jar" description="Compiles the code against WPILib and checks source format">
+  <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="lib/checkstyle-6.10-all.jar"/>
+
+  <target name="checkstyle">
+      <checkstyle config="google_checks.xml">
+          <fileset dir="src/" includes="**/*.java"/>
+          <formatter type="plain"/>
+      </checkstyle>
+  </target>
+
+  <target name="test" depends="checkstyle, jar" description="Compiles the code against WPILib and checks source format">
       <echo>Entered test function</echo>
   </target>
 

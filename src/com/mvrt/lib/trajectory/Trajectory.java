@@ -1,73 +1,75 @@
 package com.mvrt.lib.trajectory;
 
-//TODO this class should extend (nonexistant) DynamicTrajectory class (or similar)
+// TODO this class should extend (nonexistant) DynamicTrajectory class (or similar)
 public class Trajectory {
-	public static class Segment implements Cloneable {
-		public double pos, vel, acc, jerk, dt, x, y;
+  public static class Segment implements Cloneable {
+    public double pos,vel, acc, jerk, dt, x, y;
 
-		public Segment() { }
-		public Segment(double pos, double vel, double acc, double jerk, double dt, double x, double y){
-			this.pos = pos;
-			this.vel = vel;
-			this.acc = acc;
-			this.jerk = jerk;
-			this.dt = dt;
-			this.x = x;
-			this.y = y;
-		}
+    public Segment() {}
 
-		public Segment(Segment toCopy) {
-			pos = toCopy.pos;
-			vel = toCopy.vel;
-			acc = toCopy.acc;
-			jerk = toCopy.jerk;
-			dt = toCopy.dt;
-			x = toCopy.x;
-			y = toCopy.y;
-		}
+    public Segment(double pos, double vel, double acc, double jerk, double dt, double x, double y) {
+      this.pos = pos;
+      this.vel = vel;
+      this.acc = acc;
+      this.jerk = jerk;
+      this.dt = dt;
+      this.x = x;
+      this.y = y;
+    }
 
-		@Override
-		public Object clone() {
-			return new Segment(this);
-		}
-	}
+    public Segment(Segment toCopy) {
+      pos = toCopy.pos;
+      vel = toCopy.vel;
+      acc = toCopy.acc;
+      jerk = toCopy.jerk;
+      dt = toCopy.dt;
+      x = toCopy.x;
+      y = toCopy.y;
+    }
 
-	Segment[] trajSegments = null;
+    @Override
+    public Object clone() {
+      return new Segment(this);
+    }
+  }
 
-	public Trajectory(int length) {
-		trajSegments = new Segment[length];
-		for(int i = 0; i < length; i++)
-			trajSegments[i] = new Segment();
-	}
+  Segment[] trajSegments = null;
 
-	public Trajectory(Segment[] segments) {
-		this.trajSegments = segments;
-	}
+  public Trajectory(int length) {
+    trajSegments = new Segment[length];
+    for (int i = 0; i < length; i++) {
+      trajSegments[i] = new Segment();
+    }
+  }
 
-	public int getSegmentsLength() {
-		return trajSegments.length;
-	}
+  public Trajectory(Segment[] segments) {
+    this.trajSegments = segments;
+  }
 
-	public Segment getSegment(int index) throws IndexOutOfBoundsException {
-		return trajSegments[index];
-	}
+  public int getSegmentsLength() {
+    return trajSegments.length;
+  }
 
-	public void setSegment(int index, Segment segment) throws IndexOutOfBoundsException {
-		trajSegments[index] = segment;
-	}
+  public Segment getSegment(int index) throws IndexOutOfBoundsException {
+    return trajSegments[index];
+  }
 
-	public Trajectory copy() {
-		Trajectory cloned = new Trajectory(getSegmentsLength());
-		cloned.trajSegments = copySegments(this.trajSegments);
-		return cloned;
-	}
+  public void setSegment(int index, Segment segment) throws IndexOutOfBoundsException {
+    trajSegments[index] = segment;
+  }
 
-	private Segment[] copySegments(Segment[] toCopy) {
-		return toCopy.clone();
-	}
+  public Trajectory copy() {
+    Trajectory cloned = new Trajectory(getSegmentsLength());
+    cloned.trajSegments = copySegments(this.trajSegments);
+    return cloned;
+  }
 
-	public static Segment[] BLANK_SEGMENT() {
-		Segment[] blank = {new Segment(0, 0, 0, 0, 1F / 100F, 0, 0)};
-		return blank;
-	}
+  private Segment[] copySegments(Segment[] toCopy) {
+    return toCopy.clone();
+  }
+
+  public static Segment[] getBlankSegment() {
+    Segment[] blank = {new Segment(0, 0, 0, 0, 1F / 100F, 0, 0)};
+    return blank;
+  }
 }

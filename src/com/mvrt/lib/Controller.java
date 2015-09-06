@@ -1,9 +1,9 @@
 package com.mvrt.lib;
 
 public abstract class Controller {
-	protected boolean enabled = false;
+  protected boolean enabled = false;
 
-	public abstract void reset();
-	
-	public abstract boolean isOnTarget();
+  public abstract void reset();
+
+  public abstract boolean isOnTarget();
 }
