@@ -6,10 +6,9 @@ import com.m3rcuriel.controve.controllers.util.DriveOutput;
 import com.m3rcuriel.controve.controllers.util.Motion;
 import com.m3rcuriel.controve.retrievable.StateHolder;
 import com.mvrt.frc2015.Constants;
-import com.mvrt.frc2015.HardwareInterface;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class DriveBase extends Subsystem implements Runnable {
 
@@ -17,31 +16,34 @@ public class DriveBase extends Subsystem implements Runnable {
   private DriveController controller = null;
 
   // TODO move to HardwareInterface?
-  private CANTalon leftDriveBaseFront;
-  private CANTalon leftDriveBaseRear;
+  private VictorSP leftDriveBaseFront;
+  private VictorSP leftDriveBaseRear;
 
-  private CANTalon rightDriveBaseFront;
-  private CANTalon rightDriveBaseRear;
+  private VictorSP rightDriveBaseFront;
+  private VictorSP rightDriveBaseRear;
+
+  private Encoder leftEncoder;
+  private Encoder rightEncoder;
 
   public DriveBase() {
     super("Drivebase");
 
-    leftDriveBaseFront = new CANTalon(Constants.kLeftDriveFront);
-    leftDriveBaseRear = new CANTalon(Constants.kLeftDriveRear);
+    leftDriveBaseFront = new VictorSP(Constants.kLeftDriveFront);
+    leftDriveBaseRear = new VictorSP(Constants.kLeftDriveRear);
 
-    rightDriveBaseFront = new CANTalon(Constants.kRightDriveFront);
-    rightDriveBaseRear = new CANTalon(Constants.kRightDriveRear);
+    rightDriveBaseFront = new VictorSP(Constants.kRightDriveFront);
+    rightDriveBaseRear = new VictorSP(Constants.kRightDriveRear);
 
-    leftDriveBaseRear.changeControlMode(ControlMode.Follower);
-    leftDriveBaseRear.set(leftDriveBaseFront.getDeviceID());
+    leftEncoder = new Encoder(Constants.kLeftDriveEncoderA, Constants.kLeftDriveEncoderB);
+    rightEncoder = new Encoder(Constants.kRightDriveEncoderA, Constants.kRightDriveEncoderB);
 
-    rightDriveBaseRear.changeControlMode(ControlMode.Follower);
-    rightDriveBaseRear.set(rightDriveBaseFront.getDeviceID());
   }
 
   public void setDriveOutputs(DriveOutput output) {
     leftDriveBaseFront.set(output.leftMotors);
+    leftDriveBaseRear.set(output.leftMotors);
     rightDriveBaseFront.set(-output.rightMotors);
+    rightDriveBaseRear.set(-output.rightMotors);
   }
 
   @Override
@@ -54,18 +56,18 @@ public class DriveBase extends Subsystem implements Runnable {
 
   public Motion getPhysicalMotion() {
     cachedMotion.reset(leftDriveBaseFront.getPosition(), rightDriveBaseFront.getPosition(),
-        leftDriveBaseFront.getSpeed(), rightDriveBaseFront.getSpeed(),
-        HardwareInterface.kGyro.getAngle(), HardwareInterface.kGyro.getRate());
+        leftDriveBaseFront.getSpeed(), rightDriveBaseFront.getSpeed(), 0, 0);
+    //HardwareInterface.kGyro.getAngle(), HardwareInterface.kGyro.getRate());
     return cachedMotion;
   }
 
   @Override
   public void getState(StateHolder states) {
-    states.put("gyro_angle", HardwareInterface.kGyro.getAngle());
-    states.put("left_encoder", leftDriveBaseFront.getPosition());
-    states.put("left_encoder_rate", leftDriveBaseFront.getSpeed());
-    states.put("right_encoder_rate", rightDriveBaseFront.getSpeed());
-    states.put("right_encoder", rightDriveBaseFront.getPosition());
+    // states.put("gyro_angle", HardwareInterface.kGyro.getAngle());
+    states.put("left_encoder", leftEncoder.getDistance());
+    states.put("left_encoder_rate", leftEncoder.getRate());
+    states.put("right_encoder_rate", rightEncoder.getRate());
+    states.put("right_encoder", leftEncoder.getDistance());
     states.put("left_signal", leftDriveBaseFront.get());
     states.put("right_signal", rightDriveBaseFront.get());
     states.put("on_target", (controller != null && controller.onTarget()) ? 1.0 : 0.0);
@@ -73,8 +75,8 @@ public class DriveBase extends Subsystem implements Runnable {
     Motion setPointPose =
         controller == null ? getPhysicalMotion() : controller.getCurrentSetpoint();
 
-    // TODO encoder distance to setpoint
-    states.put("turn_set_point_pos", setPointPose.getHeading());
+        // TODO encoder distance to setpoint
+        states.put("turn_set_point_pos", setPointPose.getHeading());
 
   }
 

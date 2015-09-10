@@ -1,7 +1,6 @@
 package com.mvrt.frc2015;
 
 import com.mvrt.frc2015.statemachine.Commands;
-import com.mvrt.frc2015.subsystems.Intake;
 
 public class OperatorInterface {
   private Commands commands = new Commands();
@@ -12,14 +11,15 @@ public class OperatorInterface {
   }
 
   public Commands getCommands() {
-    if (toggle && HardwareInterface.kOperatorJoystick.getRawButton(Constants.kIntakeToggleButton)) {
-      toggle = false;
-      commands.intakeRequest =
-          toggle(HardwareInterface.kIntake.getState() == Intake.State.CLOSED,
-          Commands.IntakeRequest.OPEN, Commands.IntakeRequest.CLOSE);
-    } else {
-      toggle = true;
-    }
+    //    if (toggle && HardwareInterface.kOperatorJoystick
+    //    .getRawButton(Constants.kIntakeToggleButton)) {
+    //      toggle = false;
+    //      commands.intakeRequest =
+    //          toggle(HardwareInterface.kIntake.getState() == Intake.State.CLOSED,
+    //          Commands.IntakeRequest.OPEN, Commands.IntakeRequest.CLOSE);
+    //    } else {
+    //      toggle = true;
+    //    }
 
     return commands;
   }

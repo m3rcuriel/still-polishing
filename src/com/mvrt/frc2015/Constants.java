@@ -46,10 +46,16 @@ public class Constants extends ConstantsBase {
 
   // Don't change electrical constants at runtime...!!!
   public static int kLeftDriveFront = 0;
-  public static int kLeftDriveRear = 0;
+  public static int kLeftDriveRear = 1;
 
-  public static int kRightDriveFront = 0;
-  public static int kRightDriveRear = 0;
+  public static int kLeftDriveEncoderA = 0;
+  public static int kLeftDriveEncoderB = 1;
+
+  public static int kRightDriveEncoderA = 2;
+  public static int kRightDriveEncoderB = 3;
+
+  public static int kRightDriveFront = 2;
+  public static int kRightDriveRear = 3;
 
   public static int kElevatorDrive1 = 0;
   public static int kElevatorDrive2 = 0;

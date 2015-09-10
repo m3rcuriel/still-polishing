@@ -19,6 +19,7 @@ public class DriveStraightController extends DriveController {
     TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
     config.dt = Constants.kControlLoopPeriod;
     config.maxAcceleration = Constants.kDriveMaxAccelInchesPerSec2;
+    config.maxVelocity = maxVelocity;
 
     distanceController =
         new TrajectoryFollowingPositionController(Constants.kDrivePositionKp,

@@ -3,7 +3,6 @@ package com.mvrt.frc2015;
 import com.m3rcuriel.controve.controllers.util.DriveOutput;
 import com.m3rcuriel.controve.retrievable.SystemManager;
 import com.mvrt.frc2015.statemachine.StateController;
-import com.mvrt.frc2015.subsystems.DriveBase;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -36,7 +35,7 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void robotInit() {
-    slowLooper.scheduleAtFixedRate(new DriveBase(), 0, Constants.kSlowLooperPeriod,
+    slowLooper.scheduleAtFixedRate(HardwareInterface.kDrive, 0, Constants.kSlowLooperPeriod,
         TimeUnit.MILLISECONDS);
 
     SystemManager.getInstance().add(stateController);
@@ -80,7 +79,7 @@ public class Robot extends IterativeRobot {
     HardwareInterface.kDrive.setDriveOutputs(DriveOutput.NEUTRAL);;
 
     HardwareInterface.kDrive.reloadConstants();
-    HardwareInterface.kElevator.reloadConstants();
+    // HardwareInterface.kElevator.reloadConstants();
 
     System.gc();
   }
