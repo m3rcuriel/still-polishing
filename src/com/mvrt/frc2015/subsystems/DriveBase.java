@@ -1,12 +1,12 @@
 package com.mvrt.frc2015.subsystems;
 
+import com.m3rcuriel.controve.api.Subsystem;
+import com.m3rcuriel.controve.controllers.DriveController;
+import com.m3rcuriel.controve.controllers.util.DriveOutput;
+import com.m3rcuriel.controve.controllers.util.Motion;
+import com.m3rcuriel.controve.retrievable.StateHolder;
 import com.mvrt.frc2015.Constants;
 import com.mvrt.frc2015.HardwareInterface;
-import com.mvrt.lib.DriveController;
-import com.mvrt.lib.DriveOutput;
-import com.mvrt.lib.Motion;
-import com.mvrt.lib.StateHolder;
-import com.mvrt.lib.Subsystem;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;

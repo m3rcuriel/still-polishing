@@ -1,9 +1,9 @@
 package com.mvrt.frc2015;
 
+import com.m3rcuriel.controve.controllers.util.DriveOutput;
+import com.m3rcuriel.controve.retrievable.SystemManager;
 import com.mvrt.frc2015.statemachine.StateController;
 import com.mvrt.frc2015.subsystems.DriveBase;
-import com.mvrt.lib.DriveOutput;
-import com.mvrt.lib.SystemManager;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;

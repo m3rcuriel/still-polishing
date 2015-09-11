@@ -1,10 +1,10 @@
 package com.mvrt.frc2015.statemachine.routines;
 
+import com.m3rcuriel.controve.api.Routine;
 import com.mvrt.frc2015.statemachine.Commands;
 import com.mvrt.frc2015.statemachine.RobotSetpoints;
-import com.mvrt.lib.Routine;
 
-public class ManualRoutine extends Routine {
+public class ManualRoutine extends Routine<Commands, RobotSetpoints> {
 
   @Override
   public void reset() {

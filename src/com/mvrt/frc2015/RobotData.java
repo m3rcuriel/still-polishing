@@ -1,11 +1,12 @@
 package com.mvrt.frc2015;
 
-import com.mvrt.lib.StateHolder;
-import com.mvrt.lib.StateMachine;
+
+import com.m3rcuriel.controve.retrievable.Retrievable;
+import com.m3rcuriel.controve.retrievable.StateHolder;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class RobotData implements StateMachine {
+public class RobotData implements Retrievable {
 
   @Override
   public void getState(StateHolder states) {

@@ -1,12 +1,13 @@
 package com.mvrt.frc2015.subsystems.controllers;
 
+import com.m3rcuriel.controve.controllers.DriveController;
+import com.m3rcuriel.controve.controllers.TrajectoryFollowingPositionController;
+import com.m3rcuriel.controve.controllers.util.DriveOutput;
+import com.m3rcuriel.controve.controllers.util.Motion;
+import com.m3rcuriel.controve.misc.SynchronousPid;
+import com.m3rcuriel.controve.trajectory.TrajectoryFollower;
+import com.m3rcuriel.controve.trajectory.TrajectoryFollower.TrajectorySetpoint;
 import com.mvrt.frc2015.Constants;
-import com.mvrt.lib.DriveController;
-import com.mvrt.lib.DriveOutput;
-import com.mvrt.lib.Motion;
-import com.mvrt.lib.SynchronousPid;
-import com.mvrt.lib.trajectory.TrajectoryFollower;
-import com.mvrt.lib.trajectory.TrajectoryFollower.TrajectorySetpoint;
 
 public class DriveStraightController extends DriveController {
 

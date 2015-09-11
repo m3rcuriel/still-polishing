@@ -1,13 +1,12 @@
 package com.mvrt.frc2015.statemachine;
 
+import com.m3rcuriel.controve.retrievable.Retrievable;
+import com.m3rcuriel.controve.retrievable.StateHolder;
 import com.mvrt.frc2015.HardwareInterface;
 import com.mvrt.frc2015.statemachine.routines.ManualRoutine;
 import com.mvrt.lib.Routine;
-import com.mvrt.lib.StateHolder;
-import com.mvrt.lib.StateMachine;
 
-// behaviour manager
-public class StateController implements StateMachine {
+public class StateController implements Retrievable {
 
   private Routine currentRoutine = null;
   private RobotSetpoints setpoints;

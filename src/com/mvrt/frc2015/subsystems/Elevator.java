@@ -1,12 +1,12 @@
 package com.mvrt.frc2015.subsystems;
 
+import com.m3rcuriel.controve.api.Subsystem;
+import com.m3rcuriel.controve.controllers.BangBangController;
+import com.m3rcuriel.controve.controllers.Controller;
+import com.m3rcuriel.controve.controllers.TrajectoryFollowingPositionController;
+import com.m3rcuriel.controve.retrievable.StateHolder;
+import com.m3rcuriel.controve.trajectory.TrajectoryFollower;
 import com.mvrt.frc2015.Constants;
-import com.mvrt.frc2015.subsystems.controllers.BangBangController;
-import com.mvrt.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
-import com.mvrt.lib.Controller;
-import com.mvrt.lib.StateHolder;
-import com.mvrt.lib.Subsystem;
-import com.mvrt.lib.trajectory.TrajectoryFollower;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;

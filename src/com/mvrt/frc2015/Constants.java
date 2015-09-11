@@ -1,6 +1,6 @@
 package com.mvrt.frc2015;
 
-import com.mvrt.lib.misc.ConstantsBase;
+import com.m3rcuriel.controve.api.ConstantsBase;
 
 public class Constants extends ConstantsBase {
   public static double kTurnKp = 0;

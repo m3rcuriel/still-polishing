@@ -1,7 +1,7 @@
 package com.mvrt.frc2015;
 
+import com.m3rcuriel.controve.controllers.util.DriveOutput;
 import com.mvrt.frc2015.subsystems.DriveBase;
-import com.mvrt.lib.DriveOutput;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
