@@ -16,11 +16,11 @@ public class SimRobot extends SimRobotBase {
 
 
     class Run extends TimerTask {
-      long loop_counter;
+      long loopCounter;
 
       @Override
       public void run() {
-        loop_counter++;
+        loopCounter++;
       }
     }
     java.util.Timer timer = new java.util.Timer();
