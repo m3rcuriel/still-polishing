@@ -75,8 +75,8 @@ public class DriveBase extends Subsystem implements Runnable {
     Motion setPointPose =
         controller == null ? getPhysicalMotion() : controller.getCurrentSetpoint();
 
-        // TODO encoder distance to setpoint
-        states.put("turn_set_point_pos", setPointPose.getHeading());
+    // TODO encoder distance to setpoint
+    states.put("turn_set_point_pos", setPointPose.getHeading());
 
   }
 
