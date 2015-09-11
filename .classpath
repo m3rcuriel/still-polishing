@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/navx_frc.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/controve"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/FakeWPILib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
