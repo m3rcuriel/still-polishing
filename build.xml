@@ -41,4 +41,13 @@
       <echo>Entered test function</echo>
   </target>
 
+  <target name="sim-jar" depends="compile">
+    <unzip src="travis-deps/FakeWPILib.zip" dest="fake-bin"/> 
+    <exec executable="ruby">
+        <arg value="run_sim.rb"/>
+        <arg value="."/>
+        <arg value="."/>
+    </exec>
+  </target>
+
 </project> 
