@@ -41,6 +41,19 @@ public class Robot extends IterativeRobot {
     SystemManager.getInstance().add(stateController);
   }
 
+  private void buildLooper() {
+    slowLooper = Executors.newScheduledThreadPool(3);
+    slowLooper.scheduleAtFixedRate(HardwareInterface.kDrive, 0, Constants.kSlowLooperPeriod,
+        TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public void autonomousInit() {
+    if (slowLooper.isShutdown()) {
+      buildLooper();
+    }
+  }
+
   /**
    * This function is called periodically during autonomous.
    */
@@ -51,7 +64,6 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void teleopInit() {
-
   }
 
   /**
