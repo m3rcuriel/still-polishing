@@ -6,6 +6,7 @@ import com.m3rcuriel.controve.controllers.util.DriveOutput;
 import com.m3rcuriel.controve.controllers.util.Motion;
 import com.m3rcuriel.controve.retrievable.StateHolder;
 import com.mvrt.frc2015.Constants;
+import com.mvrt.frc2015.subsystems.controllers.DriveStraightController;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -44,6 +45,19 @@ public class DriveBase extends Subsystem implements Runnable {
     leftDriveBaseRear.set(output.leftMotors);
     rightDriveBaseFront.set(-output.rightMotors);
     rightDriveBaseRear.set(-output.rightMotors);
+  }
+
+  public void setDistanceSetpoint(double distance) {
+    setDistanceSetpoint(distance, Constants.kDriveMaxSpeedInchesPerSec);
+  }
+
+  public void setDistanceSetpoint(double distance, double velocity) {
+    // 0 < vel < max_vel
+    double velocityToUse = Math.min(Constants.kDriveMaxSpeedInchesPerSec, Math.max(velocity, 0));
+    controller = new DriveStraightController(
+        getPhysicalMotion(),
+        distance,
+        velocityToUse);
   }
 
   @Override
