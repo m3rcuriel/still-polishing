@@ -17,7 +17,7 @@ public class DriveStraightController extends DriveController {
 
   public DriveStraightController(Motion priorSetpoint, double goalSetpoint, double maxVelocity) {
     TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
-    config.dt = Constants.kControlLoopPeriod;
+    config.dt = Constants.kControlLoopPeriod / 1000;
     config.maxAcceleration = Constants.kDriveMaxAccelInchesPerSec2;
     config.maxVelocity = maxVelocity;
 
@@ -46,7 +46,6 @@ public class DriveStraightController extends DriveController {
         (motion.getLeftVelocity() + motion.getRightVelocity()) / 2.0);
     double throttle = distanceController.get();
     double turn = turnPid.calculate(motion.getHeading());
-
     return new DriveOutput(throttle + turn, throttle - turn);
   }
 
