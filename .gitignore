@@ -2,3 +2,6 @@
 build/*
 dist/*
 bin/
+fake-bin/
+tmp/
+mkmf.log
