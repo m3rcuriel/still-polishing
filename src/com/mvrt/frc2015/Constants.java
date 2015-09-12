@@ -19,7 +19,8 @@ public class Constants extends ConstantsBase {
   public static double kDrivePositionKa = 0;
   public static double kDriveOnTargetError = 0;
 
-  public static double kDriveMaxAccelInchesPerSec2 = 0;
+  public static double kDriveMaxSpeedInchesPerSec = 133;
+  public static double kDriveMaxAccelInchesPerSec2 = 33;
 
   public static double kDriveStraightKp = 0;
   public static double kDriveStraightKi = 0;
@@ -79,6 +80,7 @@ public class Constants extends ConstantsBase {
   public static int kOperatorJoystick = 0;
 
   public static int kIntakeToggleButton = 0;
+
 
   @Override
   public String getFileLocation() {
